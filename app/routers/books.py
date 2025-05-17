@@ -118,3 +118,18 @@ def add_book_from_form(
     session.commit()
 
     return "Book successfully added"
+
+
+@router.get("/{id}/download", response_class=StreamingResponse)
+async def download_book(
+        session: SessionDep,
+        id: Annotated[int, Path(description="The ID of the book to download")]
+) -> StreamingResponse:
+    """Returns as a JSON file the book with the given ID."""
+    book = session.get(Book, id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+
+    buffer = BytesIO(book.model_dump_json().encode("utf-8"))
+    headers = {"Content-Disposition": f"attachment; filename={book.title}.json"}
+    return StreamingResponse(buffer, headers=headers, media_type="application/octet-stream")
