@@ -18,10 +18,7 @@ connect_args = {"check_same_thread": False}
 # Crea il motore del database, che si occuperà delle connessioni
 engine = create_engine(sqlite_url, connect_args=connect_args, echo=True)
 
-#def init_database() -> None:      pre faker,
-#    SQLModel.metadata.create_all(engine)
-#Questa funzione dice a SQLModel di creare tutte le tabelle nel database sulla base dei modelli (class Book(SQLModel) ecc.) che definirai.
-
+#Questa funzione dice a SQLModel di creare tutte le tabelle nel database sulla base dei modelli (class Book(SQLModel) ecc.).
 def init_database() -> None:
     ds_exists = os.path.isfile("app/data/database.db")
     SQLModel.metadata.create_all(engine)

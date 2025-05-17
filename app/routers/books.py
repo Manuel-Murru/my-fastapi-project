@@ -10,7 +10,7 @@ from io import BytesIO
 
 router = APIRouter(prefix="/books")
 
-@router.get("/download_db", response_class=FileResponse)
+@router.get("/download_db", response_class=FileResponse, name="download_db")
 async def download_db() -> FileResponse:
     """Returns the DB file"""
     headers = {"Content-Disposition": f"attachment; filename=database.db"}
@@ -112,7 +112,7 @@ def delete_book(
 
 
 
-@router.post("/_form/")
+@router.post("/_form/", name="add_book_from_form")
 def add_book_from_form(
     session: SessionDep,
     title: Annotated[str, Form()],
@@ -142,7 +142,7 @@ async def download_book(
     headers = {"Content-Disposition": f"attachment; filename={book.title}.json"}
     return StreamingResponse(buffer, headers=headers, media_type="application/octet-stream")
 
-@router.post("/_file/")
+@router.post("/_file/", name="add_book_from_file")
 async def add_book_from_file(
     session: SessionDep,
     file: UploadFile,
