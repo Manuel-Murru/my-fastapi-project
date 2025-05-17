@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from app.routers import frontend, books
 from contextlib import asynccontextmanager
-from data.db import init_database
+from app.data.db import init_database
 
 
 @asynccontextmanager

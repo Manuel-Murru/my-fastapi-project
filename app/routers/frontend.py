@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from data.db import SessionDep
+from app.data.db import SessionDep
 from sqlmodel import select
 from app.models.book import Book
 

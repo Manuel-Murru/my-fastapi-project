@@ -3,7 +3,7 @@ from typing import Annotated, List
 from app.models.book import Book, BookCreate, BookPublic
 from app.models.review import Review
 from pydantic import ValidationError
-from data.db import SessionDep
+from app.data.db import SessionDep
 from sqlmodel import select
 
 router = APIRouter(prefix="/books")
