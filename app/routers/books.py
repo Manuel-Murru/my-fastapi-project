@@ -1,12 +1,20 @@
-from fastapi import APIRouter, Path, HTTPException, Query, Form
+from fastapi import APIRouter, Path, HTTPException, Query, Form, UploadFile
 from typing import Annotated, List
 from app.models.book import Book, BookCreate, BookPublic
 from app.models.review import Review
 from pydantic import ValidationError
-from app.data.db import SessionDep
+from app.data.db import SessionDep, sqlite_file_name
 from sqlmodel import select
+from fastapi.responses import StreamingResponse, FileResponse
+from io import BytesIO
 
 router = APIRouter(prefix="/books")
+
+@router.get("/download_db", response_class=FileResponse)
+async def download_db() -> FileResponse:
+    """Returns the DB file"""
+    headers = {"Content-Disposition": f"attachment; filename=database.db"}
+    return FileResponse(sqlite_file_name, headers=headers)
 
 @router.get("/")
 def get_all_books(
@@ -120,7 +128,7 @@ def add_book_from_form(
     return "Book successfully added"
 
 
-@router.get("/{id}/download", response_class=StreamingResponse)
+@router.get("/{id}/download", response_class=StreamingResponse, name="download_book")
 async def download_book(
         session: SessionDep,
         id: Annotated[int, Path(description="The ID of the book to download")]
@@ -133,3 +141,18 @@ async def download_book(
     buffer = BytesIO(book.model_dump_json().encode("utf-8"))
     headers = {"Content-Disposition": f"attachment; filename={book.title}.json"}
     return StreamingResponse(buffer, headers=headers, media_type="application/octet-stream")
+
+@router.post("/_file/")
+async def add_book_from_file(
+    session: SessionDep,
+    file: UploadFile,
+):
+    """Adds a new book from a JSON file upload."""
+    try:
+        contents = await file.read()
+        book = Book.model_validate_json(contents)
+        session.add(book)
+        session.commit()
+        return {"message": "Book successfully added from file", "book": book}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Invalid file or data: {e}")

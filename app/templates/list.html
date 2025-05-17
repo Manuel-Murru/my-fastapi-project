@@ -2,12 +2,21 @@
 
 {% block content %}
   <h2 style="text-align: center">Book List</h2>
+
+  {# Pulsante per scaricare il database intero #}
+  <p style="text-align: center; margin-bottom: 20px;">
+    <form action="{{ url_for('download_db') }}" method="get">
+      <input type="submit" value="Download Database" />
+    </form>
+  </p>
+
   <table border="1" style="width: 80%; margin: 0 auto; border-collapse: collapse;">
     <tr>
       <th>ID</th>
       <th>Title</th>
       <th>Author</th>
       <th>Review</th>
+      <th>Download</th>  {# colonna per scaricare singolo libro #}
     </tr>
     {% for book in books %}
       <tr>
@@ -23,4 +32,10 @@
       </tr>
     {% endfor %}
   </table>
+  <br>
+  <form action="{{ url_for('download_db') }}" method="get" style="text-align: center;">
+    <input type="submit" value="Download DB" />
+  </form>
+{% endblock %}
+
 {% endblock %}
