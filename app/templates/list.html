@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2 style="text-align: center">Book List</h2>
+  <table border="1" style="width: 80%; margin: 0 auto; border-collapse: collapse;">
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Review</th>
+    </tr>
+    {% for book in books %}
+      <tr>
+        <td>{{ book.id }}</td>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.review }}</td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endblock %}

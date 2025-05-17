@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+ <html>
+  <head>
+    <title>Library</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+  </head>
+  <body>
+    <header>
+      <h1>Library</h1>
+      <p>A simple web application example.</p>
+    </header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="{{ url_for('show_book_list') }}">Book List</a>
+      <a href="{{ url_for('add_book_form') }}">Add Book</a>
+    </nav>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+    <footer>
+      <p>&copy; 2025 Programmazione Web UNICA </p>
+    </footer>
+  </body>
+ </html>

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h3 style="text-align: center">{{ text.message }}</h3>
+  <br>
+  <div style="text-align: center">
+    <img src="{{ url_for('static', path='Rick&Morty.jpg') }}" alt="library">
+  </div>
+{% endblock %}
