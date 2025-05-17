@@ -15,6 +15,11 @@
         <td>{{ book.title }}</td>
         <td>{{ book.author }}</td>
         <td>{{ book.review }}</td>
+        <td>
+          <form action="{{ url_for('download_book', id=book.id) }}" method="get">
+            <input type="submit" value="Download" />
+          </form>
+        </td>
       </tr>
     {% endfor %}
   </table>
