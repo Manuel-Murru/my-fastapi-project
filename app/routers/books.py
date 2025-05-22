@@ -4,7 +4,7 @@ from app.models.book import Book, BookCreate, BookPublic
 from app.models.review import Review
 from pydantic import ValidationError
 from app.data.db import SessionDep, sqlite_file_name
-from sqlmodel import select
+from sqlmodel import select, delete
 from fastapi.responses import StreamingResponse, FileResponse
 from io import BytesIO
 
@@ -89,10 +89,12 @@ def update_book(
     return "Book successfully updated"
 
 
+
 @router.delete("/")
 def delete_all_books(session: SessionDep):
     """Deletes all the stored books."""
-    session.exec(select(Book)).delete()
+    statement = delete(Book)
+    session.exec(statement)
     session.commit()
     return "All books successfully deleted"
 
